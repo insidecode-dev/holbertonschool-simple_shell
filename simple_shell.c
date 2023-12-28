@@ -8,7 +8,7 @@
 void
 run_non_interactive(char **env)
 {
-	char **cpargv;
+	char **cpargv = NULL;
 	ssize_t nread;
 	size_t len;
 	int status;
@@ -24,7 +24,7 @@ run_non_interactive(char **env)
 			wait(&status);
 		else
 		{
-			execve(strtok(cpargv[0], " "), cpargv, env);
+			execve(strtok(cpargv[0], " \n\t\a"), cpargv, env);
 			dprintf(STDERR_FILENO
 				, "%s: No such file or directory\n", cpargv[0]);
 			free(cpargv[0]);
@@ -41,7 +41,7 @@ run_non_interactive(char **env)
 int
 main(__attribute__((unused)) int ac, char **argv, char **env)
 {
-	char **param;
+	char **param = NULL;
 	ssize_t nread;
 	size_t len;
 	int status;
@@ -66,7 +66,7 @@ main(__attribute__((unused)) int ac, char **argv, char **env)
 			wait(&status);
 		else
 		{
-			execve(strtok(param[0], " "), param, env);
+			execve(strtok(param[0], " \n\t\a"), param, env);
 			dprintf(STDERR_FILENO
 				, "%s: No such file or directory\n", argv[0]);
 			exit(EXIT_FAILURE);
