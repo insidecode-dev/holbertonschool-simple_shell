@@ -13,8 +13,7 @@ run_non_interactive(char **env)
 	size_t len;
 	int status;
 
-	cpargv = malloc(sizeof(char *) * 2);
-	cpargv[1] = NULL;
+	cpargv = calloc(2, sizeof(char *));
 
 	while ((nread = getline(&cpargv[0], &len, stdin)) != -1)
 	{
@@ -49,8 +48,8 @@ main(__attribute__((unused)) int ac, char **argv, char **env)
 	if (!isatty(STDIN_FILENO))
 		run_non_interactive(env);
 
-	param = malloc(sizeof(char *) * 2);
-	param[1] = NULL;
+	param = calloc(2, sizeof(char *));
+
 	while (1)
 	{
 		printf("#cisfun$ ");
