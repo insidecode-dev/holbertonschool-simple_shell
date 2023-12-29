@@ -5,74 +5,87 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
-void
-run_non_interactive(char **env)
+#define DELIM " \n\t\a"
+#define HYPEN "-"
+
+char
+**arglist(char *list, char *delim)
 {
-	char **cpargv = NULL;
-	ssize_t nread;
-	size_t len;
-	int status;
+	char *str = NULL, **vector = NULL;
+	size_t i = 0;
 
-	cpargv = calloc(2, sizeof(char *));
+	str = strtok(list, delim);
+	if (!str)
+		return (vector);
 
-	while ((nread = getline(&cpargv[0], &len, stdin)) != -1)
+	vector = realloc(vector, BUFSIZ * sizeof(char *));
+
+	if (!vector)
 	{
-		(cpargv[0])[nread - 1] = '\0';
+		perror("calloc failed\n");
+		exit(EXIT_FAILURE);
+	}	
 
-		if (fork() > 0)
-			wait(&status);
-		else
-		{
-			execve(strtok(cpargv[0], " \n\t\a"), cpargv, env);
-			dprintf(STDERR_FILENO
-				, "%s: No such file or directory\n", cpargv[0]);
-			free(cpargv[0]);
-			free(cpargv);
-			exit(EXIT_FAILURE);
-		}
+	while (str && i != BUFSIZ - 1)
+	{
+		vector[i++] = strdup(str);
+		str = strtok(NULL, delim);
 	}
 
-	free(cpargv[0]);
-	free(cpargv);
-	exit(EXIT_SUCCESS);
+	vector[i] = NULL;
+	return (vector);
 }
 
 int
 main(__attribute__((unused)) int ac, char **argv, char **env)
 {
-	char **param = NULL;
-	ssize_t nread;
-	size_t len;
-	int status;
-
-	if (!isatty(STDIN_FILENO))
-		run_non_interactive(env);
-
-	param = calloc(2, sizeof(char *));
+	char *param = NULL, **argvector = NULL;
+	ssize_t nread = 0;
+	size_t len = 0;
+	int status = 0, tty = isatty(STDIN_FILENO), i = 0;
 
 	while (1)
 	{
-		printf("#cisfun$ ");
-		fflush(stdout);
+		if (tty)
+		{
+			printf("#cisfun$ ");
+			fflush(stdout);
+		}
 
-		nread = getline(&param[0], &len, stdin);
-		if (nread == -1)
+		nread = getline(&param, &len, stdin);
+
+		if (nread == EOF)
 			break;
 
-		(param[0])[nread - 1] = '\0';
+		param[nread - 1] = '\0';
+
+		argvector = arglist(param, DELIM);
+
+		if (!argvector)
+			continue;
 
 		if (fork() > 0)
+		{
 			wait(&status);
+
+			for (i = 0;;i++)
+				if (argvector[i])
+					free(argvector[i]);
+				else
+					break;
+			free(argvector);
+		}
 		else
 		{
-			execve(strtok(param[0], " \n\t\a"), param, env);
-			dprintf(STDERR_FILENO
-				, "%s: No such file or directory\n", argv[0]);
+			execve(argvector[0], argvector, env);
+			dprintf(STDERR_FILENO, "%s: No such file or directory\n", argv[0]);
 			exit(EXIT_FAILURE);
 		}
+
+		if (!tty)
+			break;
 	}
 
-	free(param[0]);
 	free(param);
-	exit(EXIT_SUCCESS);
+	return (0);
 }

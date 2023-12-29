@@ -11,20 +11,20 @@
 char
 **arglist(char *list, char *delim)
 {
-	char *str = NULL, **vector;
+	char *str = NULL, **vector = NULL;
 	size_t i = 0;
 
 	str = strtok(list, delim);
 	if (!str)
-		return (NULL);
+		return (vector);
 
-	vector = malloc(BUFSIZ * sizeof(char *));
+	vector = realloc(vector, BUFSIZ * sizeof(char *));
 
 	if (!vector)
 	{
-		perror("alloc failed\n");
+		perror("calloc failed\n");
 		exit(EXIT_FAILURE);
-	}
+	}	
 
 	while (str && i != BUFSIZ - 1)
 	{
@@ -39,7 +39,7 @@ char
 int
 main(__attribute__((unused)) int ac, char **argv, char **env)
 {
-	char *param, **argvector;
+	char *param = NULL, **argvector = NULL;
 	ssize_t nread = 0;
 	size_t len = 0;
 	int status = 0, tty = isatty(STDIN_FILENO), i = 0;
@@ -68,10 +68,9 @@ main(__attribute__((unused)) int ac, char **argv, char **env)
 		{
 			wait(&status);
 
-			i = 0;
-			while (1)
+			for (i = 0;;i++)
 				if (argvector[i])
-					free(argvector[i++]);
+					free(argvector[i]);
 				else
 					break;
 			free(argvector);
@@ -87,13 +86,6 @@ main(__attribute__((unused)) int ac, char **argv, char **env)
 			break;
 	}
 
-	i = 0;
-	while (1)
-		if (argvector[i])
-			free(argvector[i++]);
-		else
-			break;
-	free(argvector);
-
+	free(param);
 	return (0);
 }
