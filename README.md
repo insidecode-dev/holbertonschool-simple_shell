@@ -47,10 +47,9 @@ The second option is execute it in non-interactive mode, this means that after t
 The following list will tell us what files are necessary to run the shell successfully:
 | File  | Description |
 | ------------- |:-------------:|
-| `auxiliar_functions.c` | Has functions that will divide the string (input) and check if it's valid. |
 | `main.c` | Main function that will execute the shell. |
-| `str_functions.c` | Has recreated functions to modify and manipulate strings, such as strcpy, strlen, etc. |
-| `shell.h` | Has header declarations, such as libraries, global variables and prototypes.|
+| `helperfunc.c` | Has some additional functions created by us to modify and manipulate strings and some other situations. |
+| `main.h` | Has header declarations, such as libraries, global variables and prototypes.|
 
 ## Command list
 The next list is a summarized chart of some the allowed commands that can be executed in our shell.
@@ -64,7 +63,7 @@ The next list is a summarized chart of some the allowed commands that can be exe
 
 
 ## Authors 🖊
-* Juan Esteban Duque <a href="https://github.com/Juanesduque1" rel="nofollow"><img align="center" alt="github" src="https://www.vectorlogo.zone/logos/github/github-tile.svg" height="24" /></a>
-* Yurany Ulchur <a href="https://github.com/YuranyUlchur" rel="nofollow"><img align="center" alt="github" src="https://www.vectorlogo.zone/logos/github/github-tile.svg" height="24" /></a>
+* Ziyad Ibrahimov <a href="https://github.com/z1yad020" rel="nofollow"><img align="center" alt="github" src="https://www.vectorlogo.zone/logos/github/github-tile.svg" height="24" /></a>
+* Turqut Mehdiyev <a href="https://github.com/insidecode-dev" rel="nofollow"><img align="center" alt="github" src="https://www.vectorlogo.zone/logos/github/github-tile.svg" height="24" /></a>
 
 > This project was made for [Holberton School's](https://www.holbertonschool.com/) software development program.
