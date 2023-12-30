@@ -1,11 +1,11 @@
-.TH SIMPLE_SHELL 1 "30-12-2023" "1.0" "Simple Shell Manual"
+.TH SIMPLE_SHELL 1 "30-12-2023" "1.0" "Simple Shell Manual"   
 
 .SH NAME
-simple_shell \- Basic UNIX command interpreter
+simple_shell \- Basic UNIX command interpreter    
 
 .SH SYNOPSIS
 simple_shell
-
+ 
 .SH DESCRIPTION
 simple_shell is a command line interpreter designed to execute simple commands from the standard input. It provides a prompt where users can enter commands, executes those commands, and displays the prompt again for the next command.
 
