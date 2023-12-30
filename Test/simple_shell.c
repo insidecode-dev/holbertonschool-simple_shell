@@ -1,79 +1,39 @@
-#include <string.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/wait.h>
-#include <unistd.h>
+#include "main.h"
 
-void
-run_non_interactive(char **env)
-{
-	char **cpargv;
-	ssize_t nread;
-	size_t len;
-	int status;
-
-	cpargv = malloc(sizeof(char *) * 2);
-	cpargv[1] = NULL;
-
-	while ((nread = getline(&cpargv[0], &len, stdin)) != -1)
-	{
-		(cpargv[0])[nread - 1] = '\0';
-
-		if (fork() > 0)
-			wait(&status);
-		else
-		{
-			execve(strtok(cpargv[0], " "), cpargv, env);
-			dprintf(STDERR_FILENO
-				, "%s: No such file or directory\n", cpargv[0]);
-			free(cpargv[0]);
-			free(cpargv);
-			exit(EXIT_FAILURE);
-		}
-	}
-
-	free(cpargv[0]);
-	free(cpargv);
-	exit(EXIT_SUCCESS);
-}
 
 int
 main(__attribute__((unused)) int ac, char **argv, char **env)
 {
-	char **param;
-	ssize_t nread;
-	size_t len;
-	int status;
+	char *param = NULL;
+	ssize_t nread = 0;
+	size_t len = 0;
+	int tty = isatty(STDIN_FILENO), i;
 
-	if (!isatty(STDIN_FILENO))
-		run_non_interactive(env);
-
-	param = malloc(sizeof(char *) * 2);
-	param[1] = NULL;
 	while (1)
 	{
-		printf("#cisfun$ ");
-		fflush(stdout);
+		if (tty)
+			printf("#cisfun$ ");
 
-		nread = getline(&param[0], &len, stdin);
-		if (nread == -1)
+		nread = getline(&param, &len, stdin);
+
+		if (nread == EOF)
+			goto end;
+
+		param[strcspn(param, "\n")] = '\0';
+
+		/* if line's index neither is null terminate nor character, continue*/
+		for (i = 0; param[i] != '\0' && param[i] == ' '; i++);
+
+		if (param[i] == '\0')
+			continue;
+
+		if (strcmp(param, "exit") == 0)
 			break;
-
-		(param[0])[nread - 1] = '\0';
-
-		if (fork() > 0)
-			wait(&status);
 		else
-		{
-			execve(strtok(param[0], " "), param, env);
-			dprintf(STDERR_FILENO
-				, "%s: No such file or directory\n", argv[0]);
-			exit(EXIT_FAILURE);
-		}
+			runcommandline(param);
 	}
 
-	free(param[0]);
+end:
 	free(param);
-	exit(EXIT_SUCCESS);
+	return (0);
 }
