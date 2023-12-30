@@ -29,7 +29,7 @@ main(void)
 
 		if (strcmp(param, "exit") == 0)
 			break;
-		else if (strcmp(line, "env") == 0)
+		else if (strcmp(param, "env") == 0)
 			while (*env != NULL)
 			{
 				printf("%s\n", *env);
