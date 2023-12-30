@@ -22,7 +22,8 @@ main(void)
 		param[strcspn(param, "\n")] = '\0';
 
 		/* if line's index neither is null terminate nor character, continue*/
-		for (i = 0; param[i] != '\0' && param[i] == ' '; i++);
+		for (i = 0; param[i] != '\0' && param[i] == ' '; i++)
+			;
 
 		if (param[i] == '\0')
 			continue;

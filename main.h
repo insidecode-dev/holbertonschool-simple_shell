@@ -8,7 +8,7 @@
 #include <unistd.h>
 #include <stdint.h>
 
-extern char** environ;
+extern char **environ;
 
 void runcommandline(char *);
 int findpath(char *, char *);

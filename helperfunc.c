@@ -20,7 +20,8 @@ runcommandline(char *param)
 		vector[i] = NULL;
 
 		/* if vector[0] has any '/', that mean this is path */
-		if (vector[0] && !strchr(vector[0], '/') && findpath(vector[0], newpath) == 0)
+		if (vector[0] && !strchr(vector[0], '/')
+				&& findpath(vector[0], newpath) == 0)
 			vector[0] = newpath;
 
 		execve(vector[0], vector, environ);
@@ -37,7 +38,7 @@ findpath(char *argument0, char *newpath)
 {
 	char *path = getenv("PATH");
 	char *token = strtok(path, ":");
-	
+
 	while (token != NULL)
 	{
 		snprintf(newpath, BUFSIZ, "%s/%s", token, argument0);
