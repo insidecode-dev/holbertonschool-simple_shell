@@ -11,5 +11,6 @@
 extern char** environ;
 
 void runcommandline(char *);
+int findpath(char *, char *);
 
 #endif
