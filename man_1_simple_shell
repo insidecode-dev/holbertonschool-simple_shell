@@ -1,0 +1,43 @@
+.TH SIMPLE_SHELL 1 "30-12-2023" "1.0" "Simple Shell Manual"
+
+.SH NAME
+simple_shell \- Basic UNIX command interpreter
+
+.SH SYNOPSIS
+simple_shell
+
+.SH DESCRIPTION
+simple_shell is a command line interpreter designed to execute simple commands from the standard input. It provides a prompt where users can enter commands, executes those commands, and displays the prompt again for the next command.
+
+This shell supports single-word commands without advanced features such as semicolons, pipes, or redirections.
+
+.SH FEATURES
+- Displays a prompt for user commands.
+- Executes commands entered by the user.
+- Handles commands with arguments.
+- Handles the PATH environment variable to find executables.
+- Handles errors gracefully, including handling the "end of file" condition (Ctrl+D).
+
+.SH USAGE
+To use the simple_shell, run the program and start entering commands when prompted. Exit the shell using the 'exit' command.
+
+.SH BUILT-IN COMMANDS
+- exit: Exits the shell.
+- env: Prints the current environment.
+
+.SH EXAMPLES
+$ ./simple_shell
+#cisfun$ ls
+#cisfun$ /bin/ls
+#cisfun$ ^C
+$ echo "/bin/ls" | ./simple_shell
+$ exit
+
+.SH BUGS
+Not many bugs found.
+
+.SH AUTHORS
+Turqut Mehdiyev, Ziyad Ibrahimov
+
+.SH COPYRIGHT
+No copyright. This is free and unencumbered software released into the public domain.
