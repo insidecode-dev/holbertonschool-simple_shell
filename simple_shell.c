@@ -4,7 +4,7 @@
 int
 main(void)
 {
-	char *param = NULL;
+	char *param = NULL, **env = environ;
 	ssize_t nread = 0;
 	size_t len = 0;
 	int tty = isatty(STDIN_FILENO), i;
@@ -29,6 +29,12 @@ main(void)
 
 		if (strcmp(param, "exit") == 0)
 			break;
+		else if (strcmp(line, "env") == 0)
+			while (*env != NULL)
+			{
+				printf("%s\n", *env);
+				env++;
+			}
 		else
 			runcommandline(param);
 	}
