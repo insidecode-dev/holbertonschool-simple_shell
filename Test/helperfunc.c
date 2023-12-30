@@ -4,7 +4,7 @@ void
 runcommandline(char *param)
 {
 	int i, status;
-	char *vector[BUFSIZ], path[BUFSIZ];
+	char *vector[BUFSIZ];
 
 	if (!fork())
 	{

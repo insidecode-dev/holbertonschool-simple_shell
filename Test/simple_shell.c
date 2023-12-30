@@ -2,7 +2,7 @@
 
 
 int
-main(__attribute__((unused)) int ac, char **argv, char **env)
+main(void)
 {
 	char *param = NULL;
 	ssize_t nread = 0;
